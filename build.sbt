@@ -34,6 +34,13 @@ lazy val root = (project in file("."))
     name := "oksusu-recommendation"
   )
 
+  lazy val root = (project in file("."))
+  .dependsOn(common, preprocessor)
+  .settings(commonSettings: _*)
+  .settings(
+    name := "oksusu-recommendation"
+  )
+
 lazy val common = (project in file("common"))
   .settings(commonSettings: _*)
   .settings(
@@ -44,6 +51,17 @@ lazy val common = (project in file("common"))
       "com.typesafe.scala-logging" %% "scala-logging" % "3.5.0"
     )
   )
+
+lazy val preprocessor = (project in file("preprocessor"))
+  .settings(commonSettings: _*)
+  .dependsOn(common)
+  .settings(
+    name := "oksusu-preprocessor",
+    libraryDependencies ++= AkkaHttpDeps ++ HBaseDeps ++ SparkDeps ++ Seq(
+      // the following dependency is unmanaged.
+      // "com.oracle.jdbc" % "ojdbc6" % "12.1.0.2",
+      "org.xerial" % "sqlite-jdbc" % "3.20.0" % "test",
+      "org.scalatest" %% "scalatest" % "3.0.1" % "test",
 
 lazy val preprocessor = (project in file("preprocessor"))
   .settings(commonSettings: _*)
